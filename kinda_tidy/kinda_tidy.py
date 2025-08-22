@@ -428,7 +428,7 @@ def _tee(self: pd.DataFrame,
     print(result)
   return self
            
-def plot_functions(varname: str, range: List, n:int=100, **kwargs) -> ggplot:
+def plot_functions(varname: str, range: List, n:int=100, **kwargs) -> gg.ggplot:
   """Plot a set of functions for a given range of an independent variable.
   Args:
     varname: name of independent variable to be referenced within functions
