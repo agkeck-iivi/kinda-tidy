@@ -472,9 +472,9 @@ def plot_functions(varname: str, range: List, n:int=100, **kwargs) -> gg.ggplot:
         pd.DataFrame({varname:np.linspace(range[0], range[1], n)})
         .assign(**kwargs)
         .melt(id_vars=varname, var_name='function', value_name='value')
-        .ggplot(aes(varname,'value', color='function'))
-         + geom_line()
-         + labs(y='')
+        .ggplot(gg.aes(varname,'value', color='function'))
+         + gg.geom_line()
+         + gg.labs(y='')
     )
 
 def _alt_chart(self: pd.DataFrame, **kwargs) -> alt.Chart:
