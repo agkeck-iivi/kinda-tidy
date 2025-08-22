@@ -468,7 +468,7 @@ def plot_functions(varname: str, range: List, n:int=100, **kwargs) -> ggplot:
         square_wave=lambda df: np.vectorize(swave)(df.ang)
         )
   """
-    return(
+  return(
         pd.DataFrame({varname:np.linspace(range[0], range[1], n)})
         .assign(**kwargs)
         .melt(id_vars=varname, var_name='function', value_name='value')
