@@ -473,3 +473,61 @@ pd.DataFrame.equisample = _equisample
 pd.DataFrame.tee = _tee
 pd.DataFrame.alt_chart = _alt_chart
 pd.DataFrame.ggplot = _ggplot
+
+def plot_functions(varname: str, range: List, n:int=100, **kwargs) -> ggplot:
+  """Plot a set of functions for a given range of an independent variable.
+
+  Args:
+    varname: name of independent variable to be referenced within functions
+    range: [lower_limit, upper_limit] for independent variable
+    n: (opt) number of equally spaced points in range on which to evaluate functions
+    kwargs: sequence of named functions to plot.  A function is defined as a lambda expression
+      that acts on the independent variable vector.  e.g. assuming 't' is the varname
+      
+      sine = lambda df: np.sin(df.t) 
+      
+      plots the sine of t.  For externally define functions
+      we can use the same syntax as long as the function is vectorizable. If the following
+      is defined
+      
+      def mycube(x):
+        return x*x*x/1000
+
+      we can plot it with
+      
+      cube=lambda df: mycube(df.ang)
+
+      Finally, if a function is not automatically vectorized by numpy we can vectorize it during
+      the plotting call.  Suppose we are creating a square wave based on the sign of a sine wave
+      using the following function:
+
+      def swave(x):
+        return 1 if np.sin(x) >= 0 else -1
+
+      We can plot it with
+      square_wave=lambda df: np.vectorize(swave)(df.ang)
+
+      where the np.vectorize function arranges for an implicit loop over the ang vector to
+      produce the values to plot.
+
+      example:
+      def mycube(x):
+        return x*x*x/1000
+
+      def swave(x):
+        return 1 if np.sin(x) >= 0 else -1
+
+      plot_functions('ang', [0, 4*3.1415],
+        sine=lambda df: np.sin(df.ang),
+        cube=lambda df: mycube(df.ang),
+        square_wave=lambda df: np.vectorize(swave)(df.ang)
+        )
+  """
+    return(
+        pd.DataFrame({varname:np.linspace(range[0], range[1], n)})
+        .assign(**kwargs)
+        .melt(id_vars=varname, var_name='function', value_name='value')
+        .ggplot(aes(varname,'value', color='function'))
+         + geom_line()
+         + labs(y='')
+    )
