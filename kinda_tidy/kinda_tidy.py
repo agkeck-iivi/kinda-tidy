@@ -22,7 +22,7 @@
 
 import numbers
 import re
-from typing import Any, Callable, Optional, Sequence, Union
+from typing import Any, Callable, List, Optional, Sequence, Union
 
 import altair as alt
 import numpy as np
