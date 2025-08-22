@@ -462,7 +462,7 @@ def plot_functions(varname: str, range: List, n:int=100, **kwargs) -> gg.ggplot:
         return x*x*x/1000
       def swave(x):
         return 1 if np.sin(x) >= 0 else -1
-      plot_functions('ang', [0, 4*3.1415],
+      plot_functions('ang', [-4*np.pi, 4*np.pi],
         sine=lambda df: np.sin(df.ang),
         cube=lambda df: mycube(df.ang),
         square_wave=lambda df: np.vectorize(swave)(df.ang)
