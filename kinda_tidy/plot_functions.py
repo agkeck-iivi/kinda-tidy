@@ -27,7 +27,7 @@ def create_plotting_data(function_domain: List, n:int=100, **funcs) -> pd.DataFr
     for name, func in vf.items():
         df[name] = func(df._x)
 
-    return df
+    return df.melt(id_vars='_x', var_name='function', value_name='y')
    
 def plot_functions(function_domain: List, n:int=100, **funcs) -> gg.ggplot:
     """Plot functions over a specified function_domain.
@@ -47,7 +47,6 @@ def plot_functions(function_domain: List, n:int=100, **funcs) -> gg.ggplot:
     df = create_plotting_data(function_domain, n, **funcs)
 
     p = (df
-         .melt(id_vars='_x', var_name='function', value_name='y')
         .ggplot(gg.aes(x='_x', y='y', color='function'))
          + gg.geom_line()
          + labs(x='', y='')
