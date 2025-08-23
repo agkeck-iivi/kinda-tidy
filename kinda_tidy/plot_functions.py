@@ -7,7 +7,7 @@ from typing import List
 import kinda_tidy
 
 
-def create_plotting_data(function_domain: List, n:int=100, **funcs) -> pd.DataFrame:
+def create_plotting_data(function_domain: List, n: int = 100, **funcs) -> pd.DataFrame:
     """Create plotting data for functions over a specified function_domain.
 
     Args:
@@ -20,16 +20,19 @@ def create_plotting_data(function_domain: List, n:int=100, **funcs) -> pd.DataFr
         pd.DataFrame: A pandas dataframe with function values evaluated on a range.
     """
     if len(function_domain) != 2:
-        raise ValueError("function_domain must be a list of two elements: [start, end]")
-    
+        raise ValueError(
+            "function_domain must be a list of two elements: [start, end]")
+
     vf = {name: np.vectorize(func) for name, func in funcs.items()}
-    df = pd.DataFrame({'_x':  np.linspace(function_domain[0], function_domain[1], n)})
+    df = pd.DataFrame(
+        {'_x':  np.linspace(function_domain[0], function_domain[1], n)})
     for name, func in vf.items():
         df[name] = func(df._x)
 
     return df.melt(id_vars='_x', var_name='function', value_name='y')
-   
-def plot_functions(function_domain: List, n:int=100, **funcs) -> gg.ggplot:
+
+
+def plot_functions(function_domain: List, n: int = 100, **funcs) -> gg.ggplot:
     """Plot functions over a specified function_domain.
 
     Args:
@@ -42,12 +45,13 @@ def plot_functions(function_domain: List, n:int=100, **funcs) -> gg.ggplot:
         gg.ggplot: A plotnine ggplot object with the plotted functions.
     """
     if len(function_domain) != 2:
-        raise ValueError("function_domain must be a list of two elements: [start, end]")
-    
+        raise ValueError(
+            "function_domain must be a list of two elements: [start, end]")
+
     df = create_plotting_data(function_domain, n, **funcs)
 
     p = (df
-        .ggplot(gg.aes(x='_x', y='y', color='function'))
+         .ggplot(gg.aes(x='_x', y='y', color='function'))
          + gg.geom_line()
          + labs(x='', y='')
          )
