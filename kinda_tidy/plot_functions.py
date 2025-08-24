@@ -43,6 +43,25 @@ def plot_functions(function_domain: List, n: int = 100, **funcs) -> gg.ggplot:
 
     Returns:
         gg.ggplot: A plotnine ggplot object with the plotted functions.
+
+    Example: Multiple functions on shared axes
+        plot_functions( np.pi*np.array([-1, 1]),
+            sine=np.sin,
+            taylor_approximation=lambda x: x - x**3/6 + x**5/120,
+            square_wave=lambda x: 1 if np.sin(x) >= 0 else -1,
+            ) + geom_line(size=1.2) 
+
+    Example: Multiple functions on separate facets
+        (create_plotting_data( np.pi*np.array([-1, 1]),
+            sine=np.sin,
+            taylor_approximation=lambda x: x - x**3/6 + x**5/120,
+            square_wave=lambda x: 1 if np.sin(x) >= 0 else -1,
+        )
+        .ggplot(aes(x='_x', y='y'))
+        + geom_line(size=1.2)
+        + facet_grid('function~.')
+        + labs(x='time', y='')
+        )
     """
     if len(function_domain) != 2:
         raise ValueError(
