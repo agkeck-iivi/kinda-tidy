@@ -56,7 +56,7 @@ def plot_functions(function_domain: List, n: int = 100, **funcs) -> gg.ggplot:
             sine=np.sin,
             taylor_approximation=lambda x: x - x**3/6 + x**5/120,
             square_wave=lambda x: 1 if np.sin(x) >= 0 else -1,
-        )
+            )
         .ggplot(aes(x='_x', y='y'))
         + geom_line(size=1.2)
         + facet_grid('function~.')
